@@ -1,0 +1,553 @@
+# מסמך טכני – מערכת מבחנים (Exam System)
+
+## פרטי הפרויקט
+
+**שם הפרויקט:** Exam System
+
+**מגישים:**
+
+* Ameer Iktilat – 214558827
+* Mohamed Arrabi – 324938125 
+
+---
+
+# כתובות הפרויקט
+
+**GitHub Repository**
+
+https://github.com/AmeerIktilat/QuizProj
+**GitHub Pages (Deploy)**
+
+https://ameeriktilat.github.io/QuizProj/
+---
+
+# תיאור המערכת
+
+המערכת היא מערכת מבחנים הפועלת בדפדפן בלבד (Client Side).
+
+המערכת פותחה באמצעות:
+
+* HTML5
+* CSS3
+* JavaScript (ES6 Modules)
+* Object Oriented Programming (OOP)
+* JSON
+* localStorage
+
+המערכת תומכת בשני סוגי משתמשים:
+
+* Teacher
+* Student
+
+כל הנתונים נשמרים באופן מקומי באמצעות localStorage ללא שרת.
+
+---
+
+# דפי המערכת
+
+## 1. Main Page (index.html)
+
+הדף הראשי של המערכת.
+
+כולל:
+
+* שמות המגישים
+* מספרי ת"ז
+* קישור ל-GitHub
+* כפתור התחברות
+* כפתור הרשמה
+
+ניווט:
+
+index.html
+
+↓
+
+Login
+
+↓
+
+Register
+
+---
+
+## 2. Register Page
+
+מאפשר יצירת משתמש חדש.
+
+השדות:
+
+* Full Name
+* ID
+* Email
+* Password
+* User Type (Teacher / Student)
+
+לאחר ההרשמה המשתמש נשמר ב-localStorage.
+
+---
+
+## 3. Login Page
+
+מאפשר התחברות.
+
+המערכת בודקת:
+
+* Email
+* Password
+
+לאחר התחברות:
+
+Teacher → Teacher Dashboard
+
+Student → Student Dashboard
+
+---
+
+## 4. Teacher Dashboard
+
+המסך הראשי של המורה.
+
+כולל:
+
+* רשימת מבחנים
+* יצירת מבחן
+* עריכת מבחן
+* מחיקת מבחן
+* מעבר לפרטי מבחן
+* צפייה בתוצאות תלמידים
+
+---
+
+## 5. Exam Details Page
+
+ניהול מבחן בודד.
+
+כולל:
+
+* שם מבחן
+* תיאור
+* קטגוריה
+* זמן
+* קוד מבחן
+
+ניהול שאלות:
+
+* Add Question
+* Edit Question
+* Delete Question
+
+וכן צפייה בתוצאות.
+
+---
+
+## 6. Student Dashboard
+
+כולל:
+
+* מבחנים שבוצעו
+* ציונים
+* ממוצע ציונים
+* קישור לחיפוש מבחן
+
+---
+
+## 7. Search Exam Page
+
+חיפוש מבחן באמצעות:
+
+* שם מבחן
+* קוד מבחן
+
+בחירת מבחן מעבירה לעמוד ביצוע המבחן.
+
+---
+
+## 8. Take Exam Page
+
+כולל:
+
+* פרטי המבחן
+* שאלות אמריקאיות
+* אפשרויות תשובה
+* Submit
+
+לאחר ההגשה:
+
+* חישוב ציון
+* שמירת תוצאה
+* הצגת ציון
+
+---
+
+## 9. Logout
+
+זמין מכל עמוד.
+
+מוחק את המשתמש המחובר ומחזיר לעמוד הראשי.
+
+---
+
+# ניווט בין הדפים
+
+Main
+
+↓
+
+Login
+
+↓
+
+Teacher Dashboard
+
+↓
+
+Exam Details
+
+↓
+
+Results
+
+---
+
+Main
+
+↓
+
+Login
+
+↓
+
+Student Dashboard
+
+↓
+
+Search Exam
+
+↓
+
+Take Exam
+
+↓
+
+Results
+
+---
+
+# מבנה הנתונים (JSON)
+
+## Users
+
+```json
+{
+  "id": "u1",
+  "fullName": "Ameer Iktilat",
+  "email": "ameer@gmail.com",
+  "password": "123456",
+  "role": "teacher"
+}
+```
+
+---
+
+## Exam
+
+```json
+{
+  "id": "e1",
+  "title": "JavaScript Exam",
+  "description": "Final Exam",
+  "category": "Programming",
+  "code": "JS100",
+  "duration": 60,
+  "teacherId": "u1",
+  "questions": []
+}
+```
+
+---
+
+## Question
+
+```json
+{
+  "id": "q1",
+  "text": "What is JSON?",
+  "options": [
+    "Language",
+    "Database",
+    "Format",
+    "Browser"
+  ],
+  "correctAnswer": 2
+}
+```
+
+---
+
+## Exam Result
+
+```json
+{
+  "id": "r1",
+  "studentId": "u2",
+  "examId": "e1",
+  "score": 90,
+  "answers": [
+    2,
+    1,
+    3,
+    0
+  ],
+  "date": "2026-07-11"
+}
+```
+
+---
+
+# localStorage Structure
+
+```text
+users
+
+currentUser
+
+exams
+
+results
+```
+
+---
+
+# UML – מחלקות עיקריות
+
+```text
+                 User
+        ---------------------
+        - id
+        - fullName
+        - email
+        - password
+        ---------------------
+              ▲
+      ┌───────┴────────┐
+      │                │
+ Teacher          Student
+      │                │
+ createExam()    takeExam()
+ viewResults()   viewGrades()
+
+
+
+                 Exam
+        ----------------------
+        id
+        title
+        description
+        category
+        duration
+        code
+        teacherId
+        questions[]
+        ----------------------
+
+
+
+               Question
+        ----------------------
+        id
+        text
+        options[]
+        correctAnswer
+        ----------------------
+
+
+
+             ExamResult
+        ----------------------
+        id
+        studentId
+        examId
+        answers[]
+        score
+        date
+        ----------------------
+```
+
+---
+
+# FLOW 1 – Registration
+
+User
+
+↓
+
+Register Page
+
+↓
+
+AuthService.register()
+
+↓
+
+StorageService.save()
+
+↓
+
+localStorage(users)
+
+---
+
+# FLOW 2 – Login
+
+User
+
+↓
+
+Login Page
+
+↓
+
+AuthService.login()
+
+↓
+
+StorageService.load(users)
+
+↓
+
+Password Validation
+
+↓
+
+currentUser
+
+↓
+
+Teacher Dashboard / Student Dashboard
+
+---
+
+# FLOW 3 – Teacher Creates Exam
+
+Teacher
+
+↓
+
+Teacher Dashboard
+
+↓
+
+Exam Form
+
+↓
+
+ExamService.createExam()
+
+↓
+
+StorageService.save(exams)
+
+↓
+
+localStorage
+
+---
+
+# FLOW 4 – Student Takes Exam
+
+Student
+
+↓
+
+Search Page
+
+↓
+
+ExamService.findExam()
+
+↓
+
+Take Exam Page
+
+↓
+
+Submit
+
+↓
+
+ResultService.calculate()
+
+↓
+
+StorageService.save(results)
+
+↓
+
+Student Dashboard
+
+↓
+
+Teacher Results
+
+---
+
+# FLOW 5 – Display Student Grades
+
+Student Dashboard
+
+↓
+
+ResultService.loadResults()
+
+↓
+
+StorageService.load(results)
+
+↓
+
+Calculate Average
+
+↓
+
+Display Grades
+
+---
+
+# שימוש ב־OOP
+
+במערכת נעשה שימוש בתכנות מונחה עצמים (Object Oriented Programming).
+
+המחלקות הראשיות:
+
+* User
+* Teacher
+* Student
+* Exam
+* Question
+* ExamResult
+
+שכבת השירותים:
+
+* StorageService
+* AuthService
+* ExamService
+* ResultService
+
+כל מחלקה אחראית על תחום אחר במערכת ומפרידה בין הלוגיקה העסקית לבין ממשק המשתמש.
+
+---
+
+# שימוש ב־JSON
+
+המערכת אינה משתמשת במסד נתונים.
+
+כל הנתונים נשמרים כ־JSON בתוך localStorage.
+
+בעת טעינת המערכת הנתונים נקראים, מומרצים לאובייקטים ומוצגים למשתמש.
+
+---
+
+# סיכום
+
+המערכת מממשת מערכת מבחנים מלאה הפועלת בדפדפן בלבד תוך שימוש ב־ES Modules, OOP, JSON ו־localStorage. המערכת מאפשרת למורים ליצור ולנהל מבחנים, ולסטודנטים לחפש מבחנים, לבצע אותם ולצפות בציוניהם. כל הנתונים נשמרים באופן מקומי ומנוהלים באמצעות שכבת שירותים מסודרת.
