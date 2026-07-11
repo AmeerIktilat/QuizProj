@@ -80,5 +80,3 @@ exam-management-system/
 - **localStorage:** מפתחות המערכת הם `examino_users`, `examino_exams`, `examino_results`, `examino_session` ו־`examino_theme`.
 
 תרשים המחלקות המלא נמצא ב־[OOP_DIAGRAM.md](OOP_DIAGRAM.md).
-
-[GitHub Repository] (https://github.com/Mohammad-Arrabi/Project-Client.git)
